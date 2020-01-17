@@ -19,10 +19,17 @@ struct WeatherManager {
     
     var delegate: WeatherManagerDelegate?
     
-    func fetchWeather(cityName: String) {
-        let urlString = "\(weatherURL)&q=\(cityName)"
-        performRequest(with: urlString)
-    }
+    //fetch weather by city names that contain a space
+       func fetchWeather(cityName: String){
+           let urlString: String
+           if(cityName.contains(" ")){
+               let cityNameWithSpace = (cityName as NSString).replacingOccurrences(of: " ", with: "+")
+               urlString = "\(weatherURL)&q=\(cityNameWithSpace)"
+           }else{
+               urlString = "\(weatherURL)&q=\(cityName)"
+           }
+           performRequest(with: urlString)
+       }
     
     func fetchWeather(latitude: CLLocationDegrees, longitude: CLLocationDegrees) {
         let urlString = "\(weatherURL)&lat=\(latitude)&lon=\(longitude)"
